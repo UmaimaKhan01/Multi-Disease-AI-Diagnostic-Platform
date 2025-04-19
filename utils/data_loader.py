@@ -179,4 +179,41 @@ def load_lung_data(data_dir, img_size=(224,224)):
     X = np.array(X)/255.0
     y = np.array(y, dtype=np.int32)
     # Split into train/val/test
-    X_train, X_temp, y_train, y
+    X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.30, stratify=y, random_state=42)
+    X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.50, stratify=y_temp, random_state=42)
+    return X_train, X_val, X_test, y_train, y_val, y_test
+
+def get_training_augmentation(is_3d=False):
+    """Create data augmentation pipeline for training."""
+    if is_3d:
+        # For 3D data (Alzheimer's MRI volumes)
+        def augment_3d(volume, label):
+            # Random flip along the three axes
+            if tf.random.uniform(()) > 0.5:
+                volume = volume[::-1, :, :, :]
+            if tf.random.uniform(()) > 0.5:
+                volume = volume[:, ::-1, :, :]
+            if tf.random.uniform(()) > 0.5:
+                volume = volume[:, :, ::-1, :]
+                
+            # Small random intensity shifts and scaling
+            scale = tf.random.uniform((), 0.9, 1.1)
+            shift = tf.random.uniform((), -0.1, 0.1)
+            volume = volume * scale + shift
+            volume = tf.clip_by_value(volume, 0, 1)
+            
+            return volume, label
+        
+        return augment_3d
+    else:
+        # For 2D images
+        datagen = ImageDataGenerator(
+            rotation_range=15,
+            width_shift_range=0.1,
+            height_shift_range=0.1,
+            zoom_range=0.1,
+            horizontal_flip=True,
+            vertical_flip=False,
+            fill_mode='nearest'
+        )
+        return datagen
