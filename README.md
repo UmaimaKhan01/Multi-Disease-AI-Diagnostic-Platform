@@ -14,19 +14,6 @@ Doctor Dock is a deep learning–powered diagnostic system that detects five cri
 - Alzheimer’s Disease (3D brain MRI volumes)
 - Lung Cancer (Chest X-rays)
 
-## Repository Structure
-
-```
-DoctorDock/
-├── data/                # Datasets (organized by disease)
-├── models/              # Model architectures for each disease
-├── scripts/             # Training scripts
-├── notebooks/           # Inference and Grad-CAM notebooks
-├── utils/               # Data loaders, Grad-CAM, metrics
-├── requirements.txt     # Dependencies
-└── README.md            # Project documentation
-```
-
 ## Setup Instructions
 
 1. Clone the repository:
@@ -115,8 +102,8 @@ This helps interpret model behavior and improves trust in predictions.
 
 ## Contact
 
-**Author**: Umaima Khan  
-**Email**: fn653419@ucf.edu  
+**Author**: Umaima Khan, Karthika Ramasamy
+**Email**: fn653419@ucf.edu, ka234388@ucf.edu
 **Course**: CAP 5516 – Medical Image Computing  
 **Instructor**: Dr. Chen Chen
 
@@ -129,7 +116,3 @@ This helps interpret model behavior and improves trust in predictions.
 - Hussain et al., Lung Cancer Detection
 - Grad-CAM: Selvaraju et al., 2017
 ```
-
----
-
-Let me know if you also want a `LICENSE` or sample `.gitignore` added.
