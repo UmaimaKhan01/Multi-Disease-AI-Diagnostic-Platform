@@ -15,7 +15,7 @@ import tensorflow as tf
 # Add parent directory to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from models.skin_model import build_skin_model, fine_tune_skin_model
+from models.skin_model import build_skin_model
 from utils.data_loader import load_skin_data, get_training_augmentation
 from utils.metrics import evaluate_classification
 from utils.visualization import plot_training_history, plot_gradcam_comparison
@@ -28,15 +28,13 @@ def parse_args():
                         help='Directory to save model and results')
     parser.add_argument('--batch_size', type=int, default=32,
                         help='Batch size for training')
-    parser.add_argument('--epochs', type=int, default=30,
+    parser.add_argument('--epochs', type=int, default=50,
                         help='Number of epochs to train')
-    parser.add_argument('--fine_tune_epochs', type=int, default=20,
-                        help='Number of epochs for fine-tuning')
     parser.add_argument('--img_size', type=int, default=224,
                         help='Image size for input')
     parser.add_argument('--early_stopping', action='store_true',
                         help='Enable early stopping')
-    parser.add_argument('--patience', type=int, default=5,
+    parser.add_argument('--patience', type=int, default=10,
                         help='Patience for early stopping')
     return parser.parse_args()
 
@@ -89,6 +87,58 @@ def main():
     )
     callbacks.append(model_checkpoint)
     
-    # Train model (first phase - frozen base model)
+    # Train model
     print(f"Training model for {args.epochs} epochs...")
-    history1
+    history = model.fit(
+        datagen.flow(X_train, y_train, batch_size=args.batch_size),
+        epochs=args.epochs,
+        validation_data=(X_val, y_val),
+        callbacks=callbacks
+    )
+    
+    # Plot training history
+    print("Plotting training history...")
+    fig = plot_training_history(history)
+    fig.savefig(os.path.join(args.output_dir, 'skin_training_history.png'))
+    
+    # Evaluate model on test set
+    print("Evaluating model on test set...")
+    y_pred_prob = model.predict(X_test)
+    y_pred = (y_pred_prob > 0.5).astype(int).squeeze()
+    
+    # Calculate and print metrics
+    metrics = evaluate_classification(
+        y_test, 
+        y_pred, 
+        y_pred_prob, 
+        classes=['Benign', 'Malignant']
+    )
+    
+    # Save metrics to file
+    with open(os.path.join(args.output_dir, 'skin_metrics.txt'), 'w') as f:
+        f.write("Skin Cancer Classification Model Metrics\n")
+        f.write("=======================================\n")
+        f.write(f"Accuracy: {metrics['accuracy']:.4f}\n")
+        f.write(f"F1 Score: {metrics['f1_score']:.4f}\n")
+        f.write(f"Precision: {metrics['precision']:.4f}\n")
+        f.write(f"Recall (Sensitivity): {metrics['recall']:.4f}\n")
+        f.write(f"AUC: {metrics['auc']:.4f}\n")
+    
+    # Save model
+    print("Saving model...")
+    model.save(os.path.join(args.output_dir, 'skin_model.h5'))
+    
+    # Visualize Grad-CAM for a few examples
+    print("Generating Grad-CAM visualizations...")
+    for i in range(min(5, len(X_test))):
+        fig = plot_gradcam_comparison(
+            model, 
+            X_test[i], 
+            title=f"Skin Cancer Classification Grad-CAM (True: {y_test[i]}, Pred: {y_pred[i]})"
+        )
+        fig.savefig(os.path.join(args.output_dir, f'skin_gradcam_example_{i}.png'))
+    
+    print("Training and evaluation completed!")
+
+if __name__ == "__main__":
+    main()
