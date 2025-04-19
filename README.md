@@ -35,12 +35,6 @@ Use Python 3.9 or higher. A CUDA-enabled GPU (e.g., RTX 4090) is recommended for
 
 Download and extract the following datasets into the `data/` folder:
 
-- `data/covid/` – Kaggle Radiography Database
-- `data/skin/` – HAM10000 Dataset
-- `data/brain/` – BraTS 2021 Slices
-- `data/alzheimer/` – OASIS Dataset
-- `data/lung/` – IQ-OTH or NCCD Dataset
-
 - `data/covid/` – [Kaggle Radiography Database](https://www.kaggle.com/datasets/tawsifurrahman/covid19-radiography-database)
 - `data/skin/` – [HAM10000 Skin Lesion Dataset](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000)
 - `data/brain/` – [BraTS 2021 Brain Tumor Segmentation](https://www.kaggle.com/datasets/awsaf49/brats20-dataset-training-validation)
