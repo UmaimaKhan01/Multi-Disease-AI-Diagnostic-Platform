@@ -19,7 +19,7 @@ Doctor Dock is a deep learning–powered diagnostic system that detects five cri
 1. Clone the repository:
 
 ```
-git clone https://github.com/your-username/DoctorDock.git
+git clone https://github.com/umaimakhan01/DoctorDock.git
 cd DoctorDock
 ```
 
