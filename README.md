@@ -41,6 +41,12 @@ Download and extract the following datasets into the `data/` folder:
 - `data/alzheimer/` – OASIS Dataset
 - `data/lung/` – IQ-OTH or NCCD Dataset
 
+- `data/covid/` – [Kaggle Radiography Database](https://www.kaggle.com/datasets/tawsifurrahman/covid19-radiography-database)
+- `data/skin/` – [HAM10000 Skin Lesion Dataset](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000)
+- `data/brain/` – [BraTS 2021 Brain Tumor Segmentation](https://www.kaggle.com/datasets/awsaf49/brats20-dataset-training-validation)
+- `data/alzheimer/` – [OASIS-3 Alzheimer's MRI Dataset](https://www.oasis-brains.org/)
+- `data/lung/` – [IQ-OTH/NCCD Lung Cancer Dataset](https://www.kaggle.com/datasets/serjlim/iqothnccd-lung-cancer-dataset)
+
 Ensure each disease folder contains appropriate subfolders (e.g., `normal/`, `tumor/`, etc.).
 
 ## How to Train
